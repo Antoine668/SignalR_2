@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 import { Channel, UserEntry } from '../../models/models';
-import { AuthenticationService } from 'src/app/services/authentication.service';
+import { AuthenticationService } from '../../services/authentication.service';
 
 // On doit commencer par ajouter signalr dans les node_modules: npm install @microsoft/signalr
 // Ensuite on inclut la librairie
@@ -47,6 +47,9 @@ export class ChatComponent  {
     });
 
     // TODO: Écouter le message pour mettre à jour la liste de channels
+    this.hubConnection.on('ChannelList', (data) => {
+      this.channelsList = data;
+    });
 
     this.hubConnection.on('NewMessage', (message) => {
       this.messages.push(message);
